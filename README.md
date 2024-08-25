@@ -1,2 +1,2 @@
 https://harajit05.github.io/info.edward
-https://harajitis.live/
+https://harajit.tech/
