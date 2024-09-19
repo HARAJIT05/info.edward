@@ -442,7 +442,7 @@ h1:hover {
 }
 
 .dark .card:before {
-   background-image: linear-gradient(to right,#ff6f00, #ff00e6);
+   background-image: linear-gradient(to right,#e2b5e3, #8e57fd);
 }
 
 .dark .mail {
@@ -486,7 +486,7 @@ h1:hover {
 }
 
 .dark .follow {
-   background-image: linear-gradient(to right,#ff6f00, #ff00e6);
+   background-image: linear-gradient(to right,#e2b5e3, #8e57fd);
     color: #000;
 }
 
@@ -510,7 +510,7 @@ h1:hover {
 }
 
 .light .card:before {
-    background: linear-gradient(to top, #ff6f00, #ff00e6);
+    background: linear-gradient(to top, #e2b5e3, #8e57fd);
 }
 
 .light .mail {
@@ -555,7 +555,7 @@ h1:hover {
 }
 
 .light .follow {
-    background: linear-gradient(to right, #ff6f00, #ff00e6);
+    background: linear-gradient(to right, #e2b5e3, #8e57fd);
     color: #fff;
 }
 
@@ -846,36 +846,36 @@ h1:hover {
 
 @keyframes cardDarkGradient {
     0% {
-        background-image: linear-gradient(to top,  #ff6f00, #ff00e6);
+        background-image: linear-gradient(to top,  #e2b5e3, #8e57fd);
     }
     100% {
-        background-image: linear-gradient(to top, #ff6f00, #ff00e6);
+        background-image: linear-gradient(to top, #e2b5e3, #8e57fd);
     }
 }
 
 @keyframes cardLightGradient {
     0% {
-       background-image: linear-gradient(to right,#ff6f00, #ff00e6);
+       background-image: linear-gradient(to right,#e2b5e3, #8e57fd);
     }
     100% {
-        background-image: linear-gradient(to top, #ff6f00, #ff00e6);
+        background-image: linear-gradient(to top, #e2b5e3, #8e57fd);
     }
 }
 
 @keyframes followDarkGradient {
     0% {
-        background-image: linear-gradient(to right,#ff6f00, #ff00e6);
+        background-image: linear-gradient(to right,#e2b5e3, #8e57fd);
     }
     100% {
-       background-image: linear-gradient(to right,#ff6f00, #ff00e6);
+       background-image: linear-gradient(to right,#e2b5e3, #8e57fd);
     }
 }
 
 @keyframes followLightGradient {
     0% {
-       background-image: linear-gradient(to right,#ff6f00, #ff00e6);
+       background-image: linear-gradient(to right,#e2b5e3, #8e57fd);
     }
     100% {
-        background-image: linear-gradient(to right, #ff6f00, #ff00e6);
+        background-image: linear-gradient(to right, #e2b5e3, #8e57fd);
     }
 }
