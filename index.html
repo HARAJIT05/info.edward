@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harajit Chandra Das - Interactive Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --md-sys-color-primary-light: #00639c;
+            --md-sys-color-on-primary-light: #ffffff;
+            --md-sys-color-primary-container-light: #cee5ff;
+            --md-sys-color-on-primary-container-light: #001d33;
+            --md-sys-color-secondary-light: #51606f;
+            --md-sys-color-on-secondary-light: #ffffff;
+            --md-sys-color-secondary-container-light: #d5e4f7;
+            --md-sys-color-on-secondary-container-light: #0d1d2a;
+            --md-sys-color-surface-light: #fbfcfe;
+            --md-sys-color-on-surface-light: #191c1e;
+            --md-sys-color-surface-variant-light: #dee3eb;
+            --md-sys-color-on-surface-variant-light: #42474e;
+            --md-sys-color-outline-light: #72777f;
+            --md-sys-color-background-light: #fbfcfe;
+            --md-sys-color-on-background-light: #191c1e;
+
+            --md-sys-color-primary-dark: #9acbff;
+            --md-sys-color-on-primary-dark: #003354;
+            --md-sys-color-primary-container-dark: #004a77;
+            --md-sys-color-on-primary-container-dark: #cee5ff;
+            --md-sys-color-secondary-dark: #bac8d9;
+            --md-sys-color-on-secondary-dark: #233240;
+            --md-sys-color-secondary-container-dark: #394857;
+            --md-sys-color-on-secondary-container-dark: #d5e4f7;
+            --md-sys-color-surface-dark: #111416;
+            --md-sys-color-on-surface-dark: #e2e2e5;
+            --md-sys-color-surface-variant-dark: #42474e;
+            --md-sys-color-on-surface-variant-dark: #c2c7cf;
+            --md-sys-color-outline-dark: #8c9199;
+            --md-sys-color-background-dark: #191c1e;
+            --md-sys-color-on-background-dark: #e2e2e5;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--md-sys-color-background-light);
+            color: var(--md-sys-color-on-background-light);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        html.dark body {
+            background-color: var(--md-sys-color-background-dark);
+            color: var(--md-sys-color-on-background-dark);
+        }
+        .surface { background-color: var(--md-sys-color-surface-light); }
+        html.dark .surface { background-color: var(--md-sys-color-surface-dark); }
+        .surface-variant { background-color: var(--md-sys-color-surface-variant-light); color: var(--md-sys-color-on-surface-variant-light); }
+        html.dark .surface-variant { background-color: var(--md-sys-color-surface-variant-dark); color: var(--md-sys-color-on-surface-variant-dark); }
+        .primary-container { background-color: var(--md-sys-color-primary-container-light); color: var(--md-sys-color-on-primary-container-light); }
+        html.dark .primary-container { background-color: var(--md-sys-color-primary-container-dark); color: var(--md-sys-color-on-primary-container-dark); }
+        .secondary-container { background-color: var(--md-sys-color-secondary-container-light); color: var(--md-sys-color-on-secondary-container-light); }
+        html.dark .secondary-container { background-color: var(--md-sys-color-secondary-container-dark); color: var(--md-sys-color-on-secondary-container-dark); }
+        
+        .nav-link { color: var(--md-sys-color-on-surface-variant-light); }
+        html.dark .nav-link { color: var(--md-sys-color-on-surface-variant-dark); }
+        .nav-link:hover { color: var(--md-sys-color-primary-light); }
+        html.dark .nav-link:hover { color: var(--md-sys-color-primary-dark); }
+
+        .btn {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .btn-primary { background-color: var(--md-sys-color-primary-light); color: var(--md-sys-color-on-primary-light); }
+        html.dark .btn-primary { background-color: var(--md-sys-color-primary-dark); color: var(--md-sys-color-on-primary-dark); }
+        
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: ripple-effect 0.6s linear;
+        }
+        @keyframes ripple-effect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #theme-toggle { transition: transform 0.4s ease; }
+    </style>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="sticky top-0 z-50 transition-shadow duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center backdrop-blur-xl bg-opacity-70 surface">
+            <div class="text-xl font-bold tracking-tight">Harajit Chandra Das</div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#about" class="nav-link font-medium">About</a>
+                <a href="#skills" class="nav-link font-medium">Skills</a>
+                <a href="#projects" class="nav-link font-medium">Projects</a>
+                <a href="#achievements" class="nav-link font-medium">Achievements</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                 <button id="theme-toggle" class="text-2xl nav-link">
+                    <span class="dark:hidden">🌑</span>
+                    <span class="hidden dark:inline">☀️</span>
+                 </button>
+                 <a href="mailto:harajithub@gmail.com" class="hidden md:inline-block btn btn-primary px-4 py-2 rounded-full font-bold text-sm">Contact Me</a>
+                <div class="md:hidden">
+                    <button id="menu-btn" class="focus:outline-none nav-link">
+                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden surface border-t border-gray-200 dark:border-gray-700">
+            <a href="#about" class="block py-3 px-6 text-sm nav-link">About</a>
+            <a href="#skills" class="block py-3 px-6 text-sm nav-link">Skills</a>
+            <a href="#projects" class="block py-3 px-6 text-sm nav-link">Projects</a>
+            <a href="#achievements" class="block py-3 px-6 text-sm nav-link">Achievements</a>
+            <a href="mailto:harajithub@gmail.com" class="block py-3 px-6 text-sm nav-link">Contact Me</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section id="about" class="min-h-[90vh] md:min-h-[80vh] flex items-center scroll-animate">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-12 items-center text-center md:text-left">
+                <div class="md:col-span-3">
+                    <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold leading-tight">
+                        <span class="primary-container inline-block px-2 rounded-md">Creative</span> Developer
+                        <br/>& Problem Solver
+                    </h1>
+                    <p class="mt-6 max-w-xl mx-auto md:mx-0 text-lg text-[var(--md-sys-color-on-surface-light)]/80 dark:text-[var(--md-sys-color-on-surface-dark)]/80">
+                        A passionate developer with a strong foundation in modern web technologies. I specialize in building user-centric, responsive, and accessible applications from concept to deployment.
+                    </p>
+                    <div class="mt-8 flex flex-wrap gap-4 justify-center md:justify-start">
+                        <a href="https://www.linkedin.com/in/harajit-das-a89786235/" target="_blank" class="btn btn-primary px-6 py-3 rounded-full font-bold">LinkedIn</a>
+                        <a href="https://github.com/HARAJIT05" target="_blank" class="btn surface-variant px-6 py-3 rounded-full font-bold">GitHub</a>
+                        <a href="/HARAJIT CV.pdf" download="Harajit_Das_CV.pdf" class="btn surface-variant px-6 py-3 rounded-full font-bold">Download CV</a>
+                    </div>
+                </div>
+                <div class="md:col-span-2 flex justify-center md:justify-end order-first md:order-last">
+                    <div class="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-3xl surface-variant p-4">
+                         <img src="/PFP.jpg" alt="Harajit Chandra Das" class="w-full h-full object-cover rounded-2xl shadow-lg">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="py-24 scroll-animate">
+            <h2 class="text-4xl font-bold text-center mb-12">My Tech Stack</h2>
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="surface-variant p-6 rounded-2xl">
+                    <h3 class="font-bold text-xl mb-4">Languages</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">JavaScript</span>
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">Python</span>
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">HTML/CSS</span>
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">Bash</span>
+                    </div>
+                </div>
+                <div class="surface-variant p-6 rounded-2xl">
+                    <h3 class="font-bold text-xl mb-4">Frontend</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">React.js</span>
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">Tailwind CSS</span>
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">AR.js</span>
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">MediaPipe</span>
+                    </div>
+                </div>
+                <div class="surface-variant p-6 rounded-2xl">
+                    <h3 class="font-bold text-xl mb-4">Backend & Database</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">Node.js</span>
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">Express.js</span>
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">Flask</span>
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">MongoDB</span>
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">Socket.IO</span>
+                    </div>
+                </div>
+                <div class="surface-variant p-6 rounded-2xl">
+                    <h3 class="font-bold text-xl mb-4">Tools & Technologies</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">Git & GitHub</span>
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">VS Code</span>
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">Unix</span>
+                        <span class="secondary-container font-medium px-4 py-2 rounded-lg">OpenCV</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="py-24 scroll-animate">
+            <h2 class="text-4xl font-bold text-center mb-12">Featured Projects</h2>
+            <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
+        </section>
+
+        <section id="achievements" class="py-24 scroll-animate">
+            <h2 class="text-4xl font-bold text-center mb-12">Achievements & Certifications</h2>
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
+                <a href="/CERTIFICATES/GOOGLE_certificate.pdf" target="_blank" class="block surface-variant p-6 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+                    <h4 class="font-bold">Digital Marketing Fundamentals</h4>
+                    <p class="text-sm opacity-80 mt-1">Certified by Google Digital Garage.</p>
+                    <span class="text-xs font-bold text-blue-600 dark:text-blue-400 mt-3 inline-block">View Certificate &rarr;</span>
+                </a>
+                <a href="/CERTIFICATES/SIH23_certificate.pdf" class="block surface-variant p-6 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+                    <h4 class="font-bold">Smart India Hackathon 2023</h4>
+                    <p class="text-sm opacity-80 mt-1">Selected for Intercollege Round 2.</p>
+                    <span class="text-xs font-bold text-blue-600 dark:text-blue-400 mt-3 inline-block">View Certificate &rarr;</span>
+                </a>
+                <a href="/CERTIFICATES/SIH_certificate.pdf" class="block surface-variant p-6 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+                    <h4 class="font-bold">Smart India Hackathon 2024</h4>
+                    <p class="text-sm opacity-80 mt-1">Participated in the national-level hackathon.</p>
+                    <span class="text-xs font-bold text-blue-600 dark:text-blue-400 mt-3 inline-block">View Certificate &rarr;</span>
+                </a>
+                <a href="/CERTIFICATES/AWS_certificate.pdf" target="_blank" class="block surface-variant p-6 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+                    <h4 class="font-bold">AWS Workshop for Innovators</h4>
+                    <p class="text-sm opacity-80 mt-1">Completed the "Cloud Craft" workshop.</p>
+                    <span class="text-xs font-bold text-blue-600 dark:text-blue-400 mt-3 inline-block">View Certificate &rarr;</span>
+                </a>
+                 <a href="/CERTIFICATES/TT23_certificate.pdf" target="_blank" class="block surface-variant p-6 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+                    <h4 class="font-bold">Tech Trivia-2k23</h4>
+                    <p class="text-sm opacity-80 mt-1">Secured a winning position in the technical quiz.</p>
+                    <span class="text-xs font-bold text-blue-600 dark:text-blue-400 mt-3 inline-block">View Certificate &rarr;</span>
+                </a>
+                 <a href="/CERTIFICATES/TT25_certificate.pdf" target="_blank" class="block surface-variant p-6 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+                    <h4 class="font-bold">Tech-Trivia 2k25</h4>
+                    <p class="text-sm opacity-80 mt-1">Achieved a top rank in the competition.</p>
+                    <span class="text-xs font-bold text-blue-600 dark:text-blue-400 mt-3 inline-block">View Certificate &rarr;</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="contact" class="py-24 text-center scroll-animate">
+            <h2 class="text-4xl font-bold">Have a project in mind / or want to hire me?</h2>
+            <p class="mt-4 max-w-xl mx-auto text-lg text-[var(--md-sys-color-on-surface-light)]/80 dark:text-[var(--md-sys-color-on-surface-dark)]/80">
+                I'm always open to discussing new projects and opportunities.
+            </p>
+            <a href="mailto:harajithub@gmail.com" class="btn btn-primary px-8 py-4 rounded-full font-bold text-lg mt-8 inline-block">Let's Talk</a>
+        </section>
+    </main>
+    
+    <footer class="text-center py-8 mt-8 border-t border-[var(--md-sys-color-outline-light)]/30">
+        <p class="text-[var(--md-sys-color-on-surface-variant-light)] dark:text-[var(--md-sys-color-on-surface-variant-dark)]">&copy; 2025 Harajit Das.</p>
+    </footer>
+
+    <div id="project-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm">
+        <div id="modal-content" class="surface w-full max-w-2xl max-h-[90vh] rounded-3xl shadow-2xl p-8 overflow-y-auto transform transition-transform duration-300 scale-95">
+            <button id="modal-close-btn" class="absolute top-4 right-4 text-[var(--md-sys-color-on-surface-variant-light)] hover:text-[var(--md-sys-color-on-surface-light)] dark:text-[var(--md-sys-color-on-surface-variant-dark)] dark:hover:text-[var(--md-sys-color-on-surface-dark)] text-3xl leading-none">&times;</button>
+            <img id="modal-image" src="" alt="Project Image" class="w-full h-64 object-cover rounded-2xl mb-6">
+            <h3 id="modal-title" class="text-3xl font-bold mb-2"></h3>
+            <div id="modal-tech" class="flex flex-wrap gap-2 mb-4"></div>
+            <p id="modal-description" class="text-[var(--md-sys-color-on-surface-light)]/80 dark:text-[var(--md-sys-color-on-surface-dark)]/80 mb-6"></p>
+            <a id="modal-github-link" href="#" target="_blank" class="btn btn-primary px-6 py-3 rounded-full font-bold inline-block">View on GitHub</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Disable Right-Click & Dev Tools ---
+            document.addEventListener('contextmenu', event => event.preventDefault());
+            document.addEventListener('keydown', function (e) {
+                if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
+                    e.preventDefault();
+                }
+            });
+
+            // --- Theme Toggle ---
+            const themeToggle = document.getElementById('theme-toggle');
+            themeToggle.addEventListener('click', () => {
+                const html = document.documentElement;
+                html.classList.toggle('dark');
+                localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+                themeToggle.style.transform = `rotate(${html.classList.contains('dark') ? 180 : 0}deg)`;
+            });
+            if (document.documentElement.classList.contains('dark')) {
+                themeToggle.style.transform = 'rotate(180deg)';
+            }
+
+            // --- Mobile Menu ---
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+            document.querySelectorAll('#mobile-menu a').forEach(link => link.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+
+            // --- Ripple Effect for Buttons ---
+            document.querySelectorAll('.btn').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const ripples = document.createElement('span');
+                    ripples.style.left = x + 'px';
+                    ripples.style.top = y + 'px';
+                    ripples.classList.add('ripple');
+                    this.appendChild(ripples);
+                    setTimeout(() => ripples.remove(), 600);
+                });
+            });
+
+            // --- Scroll Animations ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+            
+            // --- Header Shadow on Scroll ---
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                header.classList.toggle('shadow-lg', window.scrollY > 10);
+            });
+
+            // --- Project Data & Modal Logic ---
+            const projects = [
+                { id: 'translating-silence', title: 'Translating Silence', description: 'A full-stack web application to translate Indian Sign Language (ISL) gestures into text in real-time, promoting inclusive communication.', technologies: ['Python', 'Flask', 'OpenCV', 'Socket.IO'], github: 'https://github.com/HARAJIT05/Translating-Silence', image: 'https://i.postimg.cc/NGHrF8sF/TR.jpg' },
+                { id: 'budget-buddy', title: 'BudgetBuddy', description: 'A full-stack MERN expense tracking application to help users manage their personal finances, featuring a RESTful API and persistent data storage.', technologies: ['Node.js', 'Express.js', 'MongoDB', 'React.js'], github: 'https://github.com/HARAJIT05/BudgetBuddy', image: 'https://i.postimg.cc/gjgF2jdz/BUDGETBUDDY.jpg' },
+                { id: 'nex-ed', title: 'NexEd', description: 'An innovative web-based educational platform that uses Augmented Reality to render interactive 3D models for an immersive learning experience.', technologies: ['AR.js', 'JavaScript', 'HTML/CSS'], github: 'https://github.com/HARAJIT05/NexEd', image: 'https://i.postimg.cc/Zqn9Hy1y/nexed.jpg' }
+            ];
+
+            const projectsGrid = document.getElementById('projects-grid');
+            projects.forEach(project => {
+                const projectCard = document.createElement('div');
+                projectCard.className = 'project-card surface p-6 rounded-3xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer';
+                projectCard.innerHTML = `
+                    <img src="${project.image}" alt="${project.title}" class="w-full h-48 object-cover rounded-2xl mb-4">
+                    <h3 class="text-xl font-bold mb-2">${project.title}</h3>
+                    <p class="text-sm text-[var(--md-sys-color-on-surface-light)]/90 dark:text-[var(--md-sys-color-on-surface-dark)]/90 mb-4">${project.description.substring(0, 80)}...</p>
+                    <button data-id="${project.id}" class="view-details-btn font-bold text-sm text-blue-600 dark:text-blue-400">View Project &rarr;</button>
+                `;
+                projectsGrid.appendChild(projectCard);
+            });
+
+            const modal = document.getElementById('project-modal');
+            const modalContent = document.getElementById('modal-content');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+            
+            document.querySelectorAll('.project-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    const button = card.querySelector('.view-details-btn');
+                    if (!button) return;
+
+                    const projectId = button.dataset.id;
+                    const project = projects.find(p => p.id === projectId);
+                    if (!project) return;
+                    
+                    document.getElementById('modal-image').src = project.image;
+                    document.getElementById('modal-title').textContent = project.title;
+                    document.getElementById('modal-description').textContent = project.description;
+                    document.getElementById('modal-github-link').href = project.github;
+                    
+                    const techContainer = document.getElementById('modal-tech');
+                    techContainer.innerHTML = '';
+                    project.technologies.forEach(tech => {
+                        techContainer.innerHTML += `<span class="secondary-container text-xs font-medium px-3 py-1 rounded-full">${tech}</span>`;
+                    });
+
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                    setTimeout(() => modalContent.classList.remove('scale-95'), 10);
+                });
+            });
+
+            const closeModal = () => {
+                modalContent.classList.add('scale-95');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            };
+
+            modalCloseBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
